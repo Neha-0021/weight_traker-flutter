@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart'; // Import Firebase Core
+import 'package:firebase_core/firebase_core.dart'; 
 
 import 'package:weight_tracker/screens/auth_screen.dart';
 import 'package:weight_tracker/screens/homepage_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(); // Initialize Firebase
+  await Firebase.initializeApp(); 
   runApp(MyApp());
 }
 
@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'FlutterChat',
+      title: 'Weight tracker',
       theme: ThemeData(
         primarySwatch: Colors.pink,
         backgroundColor: Colors.pink,

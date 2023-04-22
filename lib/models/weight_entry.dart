@@ -1,5 +1,3 @@
-
-
 class WeightEntry {
   final String id;
   final double weight;
@@ -13,7 +11,7 @@ class WeightEntry {
     required this.note,
   });
 
-  // Factory method to create a WeightEntry object from a map
+  
   factory WeightEntry.fromMap(Map<String, dynamic> map) {
     return WeightEntry(
       id: map['id'],
@@ -23,7 +21,7 @@ class WeightEntry {
     );
   }
 
-  // Convert the WeightEntry object to a map
+  
   Map<String, dynamic> toMap() {
     return {
       'id': id,

@@ -11,7 +11,8 @@ class WeightHistoryScreen extends StatelessWidget {
         title: Text('Weight History'),
       ),
       body: StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance.collection('weightEntries').snapshots(),
+        stream:
+            FirebaseFirestore.instance.collection('weightEntries').snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
@@ -22,7 +23,10 @@ class WeightHistoryScreen extends StatelessWidget {
           if (snapshot.data == null || snapshot.data!.docs.isEmpty) {
             return Center(child: Text('No weight entries found.'));
           }
-          final weightEntries = snapshot.data!.docs.map((doc) => WeightEntry.fromMap(doc.data() as Map<String, dynamic>)).toList();
+          final weightEntries = snapshot.data!.docs
+              .map((doc) =>
+                  WeightEntry.fromMap(doc.data() as Map<String, dynamic>))
+              .toList();
           return ListView.builder(
             itemCount: weightEntries.length,
             itemBuilder: (BuildContext context, int index) {
@@ -30,7 +34,7 @@ class WeightHistoryScreen extends StatelessWidget {
               return WeightCard(
                 weightEntry: weightEntry,
                 onDelete: () {
-                  _showDeleteDialog(context, weightEntry);
+                  _showDeleteiocon(context, weightEntry);
                 },
               );
             },
@@ -40,7 +44,7 @@ class WeightHistoryScreen extends StatelessWidget {
     );
   }
 
-  _showDeleteDialog(BuildContext context, WeightEntry weightEntry) {
+  _showDeleteiocon(BuildContext context, WeightEntry weightEntry) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -51,14 +55,14 @@ class WeightHistoryScreen extends StatelessWidget {
             TextButton(
               child: Text('Cancel'),
               onPressed: () {
-                Navigator.pop(context); // Close the dialog
+                Navigator.pop(context); 
               },
             ),
             TextButton(
               child: Text('Delete'),
               onPressed: () async {
                 await _deleteWeightEntry(weightEntry);
-                Navigator.pop(context); // Close the dialog
+                Navigator.pop(context); 
               },
             ),
           ],
@@ -70,7 +74,7 @@ class WeightHistoryScreen extends StatelessWidget {
   _deleteWeightEntry(WeightEntry weightEntry) async {
     await FirebaseFirestore.instance
         .collection('weightEntries')
-        .doc(weightEntry.id) // Assuming the weightEntry model has an 'id' field
+        .doc(weightEntry.id) 
         .delete();
   }
 }

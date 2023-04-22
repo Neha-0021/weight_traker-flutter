@@ -1,9 +1,10 @@
-import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:weight_tracker/widgets/auth/auth_form.dart';
+import 'package:weight_tracker/screens/homepage_screen.dart';
 
 class AuthScreen extends StatefulWidget {
   @override
@@ -13,6 +14,22 @@ class AuthScreen extends StatefulWidget {
 class _AuthScreenState extends State<AuthScreen> {
   final _auth = FirebaseAuth.instance;
   var _isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkAuthStatus();
+  }
+
+  void _checkAuthStatus() async {
+    User? user = _auth.currentUser;
+    if (user != null) {
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) => HomePageScreen()),
+        (route) => false,
+      );
+    }
+  }
 
   void _submitAuthForm(
     String email,
@@ -32,6 +49,10 @@ class _AuthScreenState extends State<AuthScreen> {
           email: email,
           password: password,
         );
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => HomePageScreen()),
+          (route) => false,
+        );
       } else {
         authResult = await _auth.createUserWithEmailAndPassword(
           email: email,
@@ -44,9 +65,13 @@ class _AuthScreenState extends State<AuthScreen> {
           'username': username,
           'email': email,
         });
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => HomePageScreen()),
+          (route) => false,
+        );
       }
     } on PlatformException catch (err) {
-      var message = 'An error occurred, pelase check your credentials!';
+      var message = 'An error occurred, please check your credentials!';
 
       if (err.message != null) {
         message = err.message!;
@@ -69,13 +94,27 @@ class _AuthScreenState extends State<AuthScreen> {
     }
   }
 
+  void _signOut() async {
+    await _auth.signOut();
+    Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute(builder: (context) => AuthScreen()),
+      (route) => false,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
-      body: AuthForm(
-        _submitAuthForm,
-        _isLoading,
+      body: Center(
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              AuthForm(_submitAuthForm, _isLoading),
+            ],
+          ),
+        ),
       ),
     );
   }

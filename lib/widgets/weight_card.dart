@@ -33,7 +33,7 @@ class WeightCard extends StatelessWidget {
             SizedBox(height: 16.0),
             ElevatedButton(
               onPressed: () {
-                onDelete(); // Call the onDelete callback when the button is pressed
+                onDelete(); 
               },
               child: Text('Delete'),
             ),
